@@ -231,6 +231,7 @@ def update_chart(n_clicks, symbol, exchange, interval, overlays, subplots):
     )
     for r in range(1, n_rows + 1):
         fig.update_xaxes(type="category", row=r, col=1)
+        fig.update_yaxes(side="right", row=r, col=1)
 
     # Stats cards
     try:

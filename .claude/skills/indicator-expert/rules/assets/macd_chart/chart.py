@@ -90,6 +90,7 @@ fig.update_layout(
 )
 fig.update_xaxes(type="category", row=1, col=1)
 fig.update_xaxes(type="category", row=2, col=1)
+fig.update_yaxes(side="right")
 
 fig.write_html(script_dir / f"{SYMBOL}_macd_chart.html")
 fig.show()

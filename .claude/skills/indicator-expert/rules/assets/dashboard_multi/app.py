@@ -116,6 +116,7 @@ def update_mtf(n_clicks, symbol, exchange):
 
         fig.update_xaxes(type="category", row=row, col=col)
         fig.update_xaxes(rangeslider_visible=False, row=row, col=col)
+        fig.update_yaxes(side="right", row=row, col=col)
 
         # Determine trend
         if len(close) > 20:

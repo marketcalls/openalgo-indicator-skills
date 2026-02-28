@@ -101,6 +101,7 @@ fig.update_layout(
 )
 for r in range(1, 4):
     fig.update_xaxes(type="category", row=r, col=1)
+    fig.update_yaxes(side="right", row=r, col=1)
 
 fig.write_html(script_dir / f"{SYMBOL}_bollinger_chart.html")
 fig.show()

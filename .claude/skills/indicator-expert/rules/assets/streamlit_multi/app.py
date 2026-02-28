@@ -107,6 +107,7 @@ for idx, (tf_name, tf_cfg) in enumerate(TIMEFRAMES.items()):
             xaxis_rangeslider_visible=False, xaxis_type="category",
             margin=dict(l=10, r=10, t=10, b=10),
         )
+        fig.update_yaxes(side="right")
         st.plotly_chart(fig, use_container_width=True)
 
         # Trend determination

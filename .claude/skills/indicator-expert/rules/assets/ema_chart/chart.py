@@ -98,6 +98,7 @@ fig.update_layout(
     xaxis_type="category",
     height=600,
 )
+fig.update_yaxes(side="right")
 
 fig.write_html(script_dir / f"{SYMBOL}_ema_chart.html")
 fig.show()
