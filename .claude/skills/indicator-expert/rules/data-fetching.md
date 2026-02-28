@@ -34,6 +34,75 @@ df = client.history(
 )
 ```
 
+### Data Source: Broker API vs DuckDB
+
+The `history()` method supports a `source` parameter to choose between broker API and local DuckDB/Historify database:
+
+```python
+# Default: fetch from broker API (rate-limited ~3 req/s)
+df = client.history(
+    symbol="SBIN", exchange="NSE", interval="D",
+    start_date="2024-01-01", end_date="2025-01-01",
+    source="api",
+)
+
+# Fetch from OpenAlgo DuckDB/Historify database (no rate limit)
+df = client.history(
+    symbol="SBIN", exchange="NSE", interval="D",
+    start_date="2024-01-01", end_date="2025-01-01",
+    source="db",
+)
+
+# Custom intervals only available with source="db"
+df = client.history(
+    symbol="SBIN", exchange="NSE", interval="3m",
+    start_date="2025-01-01", end_date="2025-02-01",
+    source="db",
+)
+```
+
+| Source | Description | Rate Limit | Intervals |
+|--------|-------------|-----------|-----------|
+| `"api"` | Broker API (default) | ~3 req/s | `1m`, `3m`, `5m`, `10m`, `15m`, `30m`, `1h`, `D` |
+| `"db"` | DuckDB/Historify local DB | None | All standard + any custom interval (see below) |
+
+#### DuckDB Custom Intervals (source="db" only)
+
+DuckDB stores only `1m` and `D` data physically. All other intervals are computed on-the-fly via SQL aggregation with exchange-aware candle alignment (e.g., NSE candles align to 9:15 AM market open).
+
+**Intraday** (aggregated from 1m data):
+
+| Category | Examples | Format |
+|----------|----------|--------|
+| Standard minutes | `1m`, `5m`, `15m`, `30m` | `{N}m` |
+| Custom minutes | `2m`, `3m`, `4m`, `6m`, `7m`, `10m`, `12m`, `20m`, `25m`, `45m` | `{N}m` |
+| Standard hours | `1h` | `{N}h` |
+| Custom hours | `2h`, `3h`, `4h`, `6h` | `{N}h` |
+
+**Daily-based** (aggregated from D data):
+
+| Category | Examples | Format |
+|----------|----------|--------|
+| Daily | `D` | `D` |
+| Weekly | `W`, `2W`, `3W` | `{N}W` |
+| Monthly | `M`, `2M`, `3M`, `6M` | `{N}M` |
+| Quarterly | `Q`, `2Q` | `{N}Q` |
+| Yearly | `Y`, `2Y` | `{N}Y` |
+
+**Not supported with source="db"**: seconds intervals (`1s`, `5s`), custom days (`2D`, `3D`)
+
+#### When to Use Each Source
+
+Use `source="db"` for:
+- Backtesting and bulk data analysis (no rate limiting)
+- Scanner dashboards with many symbols
+- Custom interval aggregation (`2m`, `3m`, `4h`, `W`, `M`, `Q`, `Y`)
+- Multi-timeframe analysis with non-standard intervals
+
+Use `source="api"` (default) for:
+- Real-time or near real-time data
+- When DuckDB database is not configured
+
 ### Data Normalization (ALWAYS DO THIS)
 
 ```python
@@ -137,7 +206,7 @@ df.columns = [c.lower() for c in df.columns]
 ```python
 INDIAN_EXCHANGES = {"NSE", "BSE", "NFO", "MCX", "NSE_INDEX"}
 
-def fetch_data(symbol, exchange="NSE", interval="D", days=365):
+def fetch_data(symbol, exchange="NSE", interval="D", days=365, source="api"):
     if exchange in INDIAN_EXCHANGES:
         # Use OpenAlgo
         end_date = datetime.now().date()
@@ -146,6 +215,7 @@ def fetch_data(symbol, exchange="NSE", interval="D", days=365):
             symbol=symbol, exchange=exchange, interval=interval,
             start_date=start_date.strftime("%Y-%m-%d"),
             end_date=end_date.strftime("%Y-%m-%d"),
+            source=source,
         )
     else:
         # Use yfinance
