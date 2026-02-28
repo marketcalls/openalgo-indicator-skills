@@ -255,3 +255,9 @@ def refresh_ltp(n):
 python dashboards/my_dashboard/app.py
 # Opens at http://127.0.0.1:8050
 ```
+
+---
+
+## Streamlit Alternative
+
+For Streamlit-based dashboards instead of Dash, see [streamlit-patterns.md](streamlit-patterns.md). Streamlit offers simpler setup (no callbacks), built-in `st.metric()`, `st.dataframe()`, and `st.download_button()`, at the cost of less fine-grained layout control.

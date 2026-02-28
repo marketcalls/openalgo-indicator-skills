@@ -1,6 +1,6 @@
 ---
 name: indicator-setup
-description: Set up the Python environment for OpenAlgo indicator analysis. Installs openalgo, plotly, dash, numba, yfinance, matplotlib, seaborn, and creates the project folder structure.
+description: Set up the Python environment for OpenAlgo indicator analysis. Installs openalgo, plotly, dash, streamlit, numba, yfinance, matplotlib, seaborn, and creates the project folder structure.
 argument-hint: "[python-version]"
 allowed-tools: Bash, Read, Write, Glob, AskUserQuestion
 ---
@@ -44,7 +44,7 @@ If user specified a Python version argument, use that instead of `python3`.
 Install all required packages:
 
 ```bash
-pip install openalgo yfinance plotly dash dash-bootstrap-components numba numpy pandas python-dotenv websocket-client httpx scipy nbformat matplotlib seaborn ipywidgets
+pip install openalgo yfinance plotly dash dash-bootstrap-components streamlit numba numpy pandas python-dotenv websocket-client httpx scipy nbformat matplotlib seaborn ipywidgets
 ```
 
 ### Step 4: Create Project Folders
@@ -93,6 +93,7 @@ import openalgo
 from openalgo import ta
 import plotly
 import dash
+import streamlit
 import numba
 import numpy as np
 import pandas as pd
@@ -105,6 +106,7 @@ print('All packages installed successfully')
 print(f'  openalgo: {openalgo.__version__}')
 print(f'  plotly: {plotly.__version__}')
 print(f'  dash: {dash.__version__}')
+print(f'  streamlit: {streamlit.__version__}')
 print(f'  numba: {numba.__version__}')
 print(f'  numpy: {np.__version__}')
 print(f'  pandas: {pd.__version__}')

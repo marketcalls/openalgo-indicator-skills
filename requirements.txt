@@ -14,3 +14,4 @@ nbformat
 matplotlib
 seaborn
 ipywidgets
+streamlit

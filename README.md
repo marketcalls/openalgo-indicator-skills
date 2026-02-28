@@ -2,7 +2,7 @@
 
 A comprehensive collection of technical indicator skills for charting, analysis, and custom indicator development using OpenAlgo. Works with **40+ AI coding agents** via [skills.sh](https://github.com/vercel-labs/skills) — including Claude Code, Cursor, Codex, OpenCode, Cline, Windsurf, GitHub Copilot, Gemini CLI, Roo Code, and more.
 
-Supports **Indian markets** via OpenAlgo and **US/Global markets** via yfinance. Includes 100+ Numba-optimized indicators, Plotly dark-themed charts, Dash web dashboards, real-time WebSocket feeds, multi-symbol scanners, and a custom indicator builder with Numba JIT + NumPy.
+Supports **Indian markets** via OpenAlgo and **US/Global markets** via yfinance. Includes 100+ Numba-optimized indicators, Plotly dark-themed charts, Dash and Streamlit web dashboards, real-time WebSocket feeds, multi-symbol scanners, and a custom indicator builder with Numba JIT + NumPy.
 
 ## Quick Install
 
@@ -75,14 +75,14 @@ The `npx skills add` command detects which agents you have installed and places 
 
 | Command | What It Does |
 |---------|-------------|
-| `/indicator-setup` | Detects OS, creates venv, installs all packages (openalgo, plotly, dash, numba, yfinance, matplotlib, seaborn), configures `.env` with API keys |
+| `/indicator-setup` | Detects OS, creates venv, installs all packages (openalgo, plotly, dash, streamlit, numba, yfinance, matplotlib, seaborn), configures `.env` with API keys |
 | `/indicator-chart` | Charts any indicator on a symbol with Plotly dark theme — overlay or subplot, with signal markers and plain-language explanation |
 | `/custom-indicator` | Creates a custom indicator using Numba JIT + NumPy — generates `indicator.py` + `chart.py` + `benchmark.py` |
-| `/indicator-dashboard` | Builds a Plotly Dash web application — single-symbol, multi-symbol, multi-timeframe, or scanner dashboard |
+| `/indicator-dashboard` | Builds a Plotly Dash or Streamlit web application — single-symbol, multi-symbol, multi-timeframe, or scanner dashboard |
 | `/indicator-scanner` | Scans multiple symbols (NIFTY 50, BANKNIFTY stocks) with indicator conditions — RSI, EMA crossover, Supertrend, volume spike |
 | `/live-feed` | Real-time indicator computation on WebSocket streaming data — LTP, quote, or depth mode with rolling buffer |
 
-### Pre-Built Chart Templates (11)
+### Pre-Built Chart Templates (13)
 
 | Template | Type | Description |
 |----------|------|-------------|
@@ -94,11 +94,13 @@ The `npx skills add` command detects which agents you have installed and places 
 | Multi-Indicator | Multi-Panel | Candlestick + EMA + RSI + MACD + Volume with bias assessment |
 | Basic Dashboard | Web App | Single-symbol Plotly Dash app with indicator checkboxes and stats cards |
 | Multi Dashboard | Web App | Multi-timeframe Dash app (5m/15m/1h/D grid) with confluence detection |
+| Streamlit Basic | Web App | Single-symbol Streamlit app with sidebar, metrics, plotly charts |
+| Streamlit Multi | Web App | Multi-timeframe Streamlit app with confluence summary |
 | Custom Indicator | Numba | Z-Score example with `@njit` core + pandas wrapper + benchmark |
 | Live Feed | WebSocket | Real-time LTP feed with EMA/RSI computation on rolling buffer |
 | Scanner | Multi-Symbol | NIFTY 50 scanner with 5 scan types (RSI, EMA, Supertrend, Volume) |
 
-### Knowledge Base (11 Rule Files)
+### Knowledge Base (12 Rule Files)
 
 | Category | What's Covered |
 |----------|---------------|
@@ -108,7 +110,8 @@ The `npx skills add` command detects which agents you have installed and places 
 | **Custom Indicators** | Numba `@njit(cache=True, nogil=True)` template patterns, single/multi-output, NaN handling, DO/DON'T rules, performance tips |
 | **WebSocket Feeds** | LTP/Quote/Depth subscription, polling stored data, unsubscribe/disconnect, real-time indicator computation with rolling buffer |
 | **Numba Optimization** | OpenAlgo numba_shim config, decorator patterns, what works inside `@njit`, NaN handling (critical), cache management, warmup, algorithm complexity |
-| **Dashboards** | Dash app structure, multi-indicator layout, dynamic subplot callbacks, stats cards, auto-refresh with `dcc.Interval` |
+| **Dash Dashboards** | Dash app structure, multi-indicator layout, dynamic subplot callbacks, stats cards, auto-refresh with `dcc.Interval` |
+| **Streamlit Dashboards** | Streamlit app structure, sidebar inputs, `st.plotly_chart()`, `st.metric()`, auto-refresh, scanner tables, dark theme |
 | **Multi-Timeframe** | Fetch multiple timeframes, same indicator across TFs, confluence detection (all bullish/bearish/mixed), MTF grid chart |
 | **Signal Generation** | Core 4-step pipeline, crossover/crossunder, `ta.exrem()` cleaning, common patterns (EMA, RSI, Supertrend, MACD, Bollinger, ADX) |
 | **Indicator Combinations** | Category mixing rules, 6 combination patterns (Trend+Momentum, Triple Screen, BB+Keltner Squeeze, ADX+DI, Multi-Indicator Scorecard) |
@@ -158,7 +161,7 @@ python -m venv venv
 source venv/bin/activate   # Linux/Mac
 # venv\Scripts\activate    # Windows
 
-pip install openalgo yfinance plotly dash dash-bootstrap-components numba numpy pandas python-dotenv websocket-client httpx scipy nbformat matplotlib seaborn ipywidgets
+pip install openalgo yfinance plotly dash dash-bootstrap-components streamlit numba numpy pandas python-dotenv websocket-client httpx scipy nbformat matplotlib seaborn ipywidgets
 ```
 
 ### 4. Configure API Keys
@@ -208,12 +211,18 @@ Create a Numba-optimized custom indicator with chart and benchmark.
 
 ### `/indicator-dashboard` — Web Dashboards
 
-Build a Plotly Dash web application with live charts.
+Build a Plotly Dash or Streamlit web application with live charts.
 
 ```
+# Plotly Dash
 /indicator-dashboard single SBIN
 /indicator-dashboard multi-timeframe RELIANCE
-/indicator-dashboard scanner nifty50
+/indicator-dashboard scanner-dashboard
+
+# Streamlit
+/indicator-dashboard streamlit-single SBIN
+/indicator-dashboard streamlit-multi RELIANCE
+/indicator-dashboard streamlit-scanner
 ```
 
 ### `/indicator-scanner` — Scan Stocks
@@ -367,7 +376,7 @@ scanners/
 │       │   └── SKILL.md
 │       ├── custom-indicator/            # /custom-indicator - Custom indicator builder
 │       │   └── SKILL.md
-│       ├── indicator-dashboard/         # /indicator-dashboard - Dash web apps
+│       ├── indicator-dashboard/         # /indicator-dashboard - Dash/Streamlit web apps
 │       │   └── SKILL.md
 │       ├── indicator-scanner/           # /indicator-scanner - Multi-symbol scanner
 │       │   └── SKILL.md
@@ -375,7 +384,7 @@ scanners/
 │       │   └── SKILL.md
 │       └── indicator-expert/            # Knowledge base (auto-loaded)
 │           ├── SKILL.md                 # Main skill (modular reference hub)
-│           └── rules/                   # 11 modular rule files
+│           └── rules/                   # 12 modular rule files
 │               ├── indicator-catalog.md
 │               ├── data-fetching.md
 │               ├── plotting.md
@@ -383,6 +392,7 @@ scanners/
 │               ├── websocket-feeds.md
 │               ├── numba-optimization.md
 │               ├── dashboard-patterns.md
+│               ├── streamlit-patterns.md
 │               ├── multi-timeframe.md
 │               ├── signal-generation.md
 │               ├── indicator-combinations.md
@@ -396,6 +406,8 @@ scanners/
 │                   ├── multi_indicator/chart.py
 │                   ├── dashboard_basic/app.py
 │                   ├── dashboard_multi/app.py
+│                   ├── streamlit_basic/app.py
+│                   ├── streamlit_multi/app.py
 │                   ├── custom_indicator/template.py
 │                   ├── live_feed/template.py
 │                   └── scanner/template.py
@@ -416,6 +428,7 @@ scanners/
 | `websocket-feeds.md` | LTP/Quote/Depth subscription, rolling buffer, real-time indicator computation |
 | `numba-optimization.md` | `@njit` patterns, NaN handling, cache management, warmup, O(n) algorithms |
 | `dashboard-patterns.md` | Dash app structure, dynamic subplots, stats cards, auto-refresh |
+| `streamlit-patterns.md` | Streamlit app structure, sidebar inputs, `st.plotly_chart()`, metrics, scanner tables |
 | `multi-timeframe.md` | Multiple timeframes, confluence detection, MTF grid chart |
 | `signal-generation.md` | 4-step pipeline, crossover/crossunder, exrem cleaning, common patterns |
 | `indicator-combinations.md` | Category mixing, 6 combination patterns, confluence analysis |

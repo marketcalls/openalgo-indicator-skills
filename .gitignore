@@ -1,8 +1,12 @@
-# Environment
-.env
+# Virtual environments
 venv/
+.venv/
 __pycache__/
 *.pyc
+
+# Environment files
+.env
+*.env
 
 # Generated outputs
 charts/*.html
@@ -11,7 +15,7 @@ charts/*.csv
 dashboards/*.log
 scanners/*.csv
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
@@ -19,3 +23,9 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Pickle files
+*.pkl
+
+# Claude Code local settings
+.claude/settings.local.json

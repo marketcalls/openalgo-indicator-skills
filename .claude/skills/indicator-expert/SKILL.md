@@ -8,12 +8,12 @@ user-invocable: false
 
 ## Environment
 
-- Python with openalgo, pandas, numpy, plotly, dash, numba
+- Python with openalgo, pandas, numpy, plotly, dash, streamlit, numba
 - Data sources: OpenAlgo (Indian markets via `client.history()`, `client.quotes()`, `client.depth()`), yfinance (US/Global)
 - Real-time: OpenAlgo WebSocket (`client.connect()`, `subscribe_ltp`, `subscribe_quote`, `subscribe_depth`)
 - Indicators: **openalgo.ta** (ALWAYS — 100+ Numba-optimized indicators)
 - Charts: Plotly with `template="plotly_dark"`
-- Dashboards: Plotly Dash with `dash-bootstrap-components`
+- Dashboards: Plotly Dash with `dash-bootstrap-components` OR Streamlit with `st.plotly_chart()`
 - Custom indicators: Numba `@njit(cache=True, nogil=True)` + NumPy
 - API keys loaded from single root `.env` via `python-dotenv` + `find_dotenv()` — never hardcode keys
 - Scripts go in appropriate directories (charts/, dashboards/, custom_indicators/, scanners/) created on-demand
@@ -96,6 +96,7 @@ Detailed reference for each topic is in `rules/`:
 | [websocket-feeds](rules/websocket-feeds.md) | Real-time LTP/Quote/Depth streaming via WebSocket |
 | [numba-optimization](rules/numba-optimization.md) | Numba JIT patterns, cache, nogil, NaN handling |
 | [dashboard-patterns](rules/dashboard-patterns.md) | Plotly Dash web applications with callbacks |
+| [streamlit-patterns](rules/streamlit-patterns.md) | Streamlit web applications with sidebar, metrics, plotly charts |
 | [multi-timeframe](rules/multi-timeframe.md) | Multi-timeframe indicator analysis |
 | [signal-generation](rules/signal-generation.md) | Signal generation, cleaning, crossover/crossunder |
 | [indicator-combinations](rules/indicator-combinations.md) | Combining indicators for confluence analysis |
@@ -113,6 +114,8 @@ Detailed reference for each topic is in `rules/`:
 | Multi-Indicator | `assets/multi_indicator/chart.py` | Candlestick + EMA + RSI + MACD + Volume |
 | Basic Dashboard | `assets/dashboard_basic/app.py` | Single-symbol Plotly Dash app |
 | Multi Dashboard | `assets/dashboard_multi/app.py` | Multi-symbol multi-timeframe dashboard |
+| Streamlit Basic | `assets/streamlit_basic/app.py` | Single-symbol Streamlit app |
+| Streamlit Multi | `assets/streamlit_multi/app.py` | Multi-timeframe Streamlit app |
 | Custom Indicator | `assets/custom_indicator/template.py` | Numba custom indicator template |
 | Live Feed | `assets/live_feed/template.py` | WebSocket real-time indicator |
 | Scanner | `assets/scanner/template.py` | Multi-symbol indicator scanner |
