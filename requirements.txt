@@ -1,0 +1,16 @@
+openalgo
+yfinance
+plotly
+dash
+dash-bootstrap-components
+numba
+numpy
+pandas
+python-dotenv
+websocket-client
+httpx
+scipy
+nbformat
+matplotlib
+seaborn
+ipywidgets
